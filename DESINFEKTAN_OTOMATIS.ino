@@ -4,7 +4,7 @@
  * Chanel youtube : Guntur Agusta
  * 
  * 
- * Download skema rangkaian desinfektan otomatis >>> https://github.com/guntur1997/DisinfektanChamber
+ * Download skema rangkaian desinfektan otomatis >>> http://beteshis.com/2zPi
  */
 
 
