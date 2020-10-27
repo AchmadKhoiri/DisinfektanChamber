@@ -13,9 +13,10 @@
 #define pinMinus       A2
 #define pinOk          A3
 #define pompa          2
+#define led            13
 
-const int pingPin = 11;
-const int echoPin = 10;
+const int pingPin = 5;
+const int echoPin = 6;
  
 #include <EEPROM.h>
 #include <Wire.h>
@@ -44,7 +45,9 @@ void setup() {
   pinMode(pinMinus, INPUT_PULLUP);
   pinMode(pinOk, INPUT_PULLUP);
   pinMode(pompa, OUTPUT);
+  pinMode(led, OUTPUT);
   digitalWrite(pompa, HIGH);
+  digitalWrite(led, LOW);
 
   lcd.begin();
   lcd.backlight();
@@ -65,7 +68,7 @@ void setup() {
 
 void loop() {
   
-  if (menuLevel == 0){  //.............................TAMPILAN HOME
+  if (!menuLevel ){  //.............................TAMPILAN HOME
     
     setJarak = EEPROM.read(0);
     setDelay = EEPROM.read(1);
@@ -81,9 +84,11 @@ void loop() {
     pinMode(echoPin, INPUT);
     duration = pulseIn(echoPin, HIGH);
     jarak = microsecondsToCentimeters(duration);
+    //delay(1000); 
 
     if (jarak <= setJarak) {
         digitalWrite(pompa, LOW);
+        digitalWrite(led, HIGH);
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("DESINFEKTAN ON");
@@ -92,15 +97,17 @@ void loop() {
         delay(setDelay * 1000);
         lcd.clear();
         digitalWrite(pompa, HIGH);
+        digitalWrite(led, LOW);
     }
     else {
         digitalWrite(pompa, HIGH);
+        digitalWrite(led, LOW);
         lcd.setCursor(0, 0);
         lcd.print("AUTO DESINFEKTAN");
         lcd.setCursor(0, 1);
-        lcd.print("CHAMBER ver.1.0 ");
+        lcd.print("CHAMBER SYSTEM  ");
 
-    }
+    } 
   }
 
 
@@ -225,7 +232,7 @@ void loop() {
           lcd.clear();
           delay(50);
           displayMenu();
-          lcd.setCursor(0, 1);
+          lcd.setCursor(8, 1);
           lcd.blink();
          }
         else if (menuIndex[0] == 2)
@@ -233,7 +240,7 @@ void loop() {
           lcd.clear();
           delay(50);
           displayMenu();
-          lcd.setCursor(0, 1);
+          lcd.setCursor(8, 1);
           lcd.blink();
          }
          else if (menuIndex[0] == 3)
@@ -246,6 +253,7 @@ void loop() {
           lcd.setCursor(0, 1);
           lcd.print("DESINFEKTAN");
           digitalWrite(pompa, LOW);
+          digitalWrite(led, HIGH);
           delay(setDelay * 1000);
           menuLevel = 0;
           lcd.clear();
